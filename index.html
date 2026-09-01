@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SORA — Fragrance House</title>
+<meta name="description" content="SORA — a minimalist fragrance house. Scent, distilled.">
+<link rel="icon" type="image/png" href="sora-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bone:#EDE6D8;
+    --paper:#F7F3EA;
+    --ink:#1E1912;
+    --umber:#7C6A57;
+    --brass:#A9812F;
+    --oxblood:#5C1220;
+    --line: rgba(30,25,18,0.13);
+    --line-soft: rgba(30,25,18,0.07);
+    --radius: 2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .8s ease, color .8s ease;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+  ul{list-style:none;}
+  .display{font-family:'Fraunces', serif;}
+  .eyebrow{
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--umber); font-weight:600;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media(max-width:640px){ .wrap{padding:0 20px;} }
+
+  /* ===== Reduced motion ===== */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ===== Focus states ===== */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--oxblood); outline-offset:3px;
+  }
+
+  /* ===== Header ===== */
+  header{
+    position:relative; z-index:80;
+    background:rgba(247,243,234,0.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    transition:background-color .8s ease, border-color .8s ease;
+  }
+  body[data-theme] header{ background:color-mix(in srgb, var(--paper) 88%, transparent); }
+  .site-top{ position:sticky; top:0; z-index:90; }
+  .marquee-bar{
+    background:var(--ink); color:var(--paper); overflow:hidden; white-space:nowrap;
+    padding:9px 0; transition:background-color .8s ease;
+  }
+  body[data-theme] .marquee-bar{ background:#0c0a08; }
+  .marquee-track{
+    display:inline-flex; gap:14px; align-items:center;
+    font-size:11px; letter-spacing:.1em; font-weight:600;
+    animation:marqueeScroll 28s linear infinite;
+    padding-left:100%;
+  }
+  .marquee-track span:nth-child(2n){ color:var(--brass); }
+  @keyframes marqueeScroll{ from{ transform:translateX(0); } to{ transform:translateX(-100%); } }
+  @media(prefers-reduced-motion: reduce){ .marquee-track{ animation:none; padding-left:20px; } }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:76px; }
+  .nav-left, .nav-right{ display:flex; align-items:center; gap:28px; }
+  .wordmark{ font-family:'Fraunces', serif; font-weight:600; font-size:22px; letter-spacing:.06em; }
+  .nav-links{ display:flex; gap:26px; }
+  .nav-links a{ font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--umber); font-weight:600; transition:color .2s; }
+  .nav-links a:hover{ color:var(--ink); }
+  .icon-btn{ position:relative; width:38px; height:38px; display:flex; align-items:center; justify-content:center; }
+  .icon-btn svg{ width:19px; height:19px; }
+  .badge{
+    position:absolute; top:2px; right:2px; background:var(--oxblood); color:var(--paper);
+    font-size:10px; font-weight:700; width:16px; height:16px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .menu-toggle{ display:none; }
+  @media(max-width:800px){
+    .nav-links{ display:none; }
+    .menu-toggle{ display:flex; }
+  }
+
+  /* ===== Splash (full-screen brand intro) ===== */
+  .splash{
+    position:relative; overflow:hidden;
+    min-height:100vh; min-height:100dvh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(169,129,47,0.10), transparent 60%),
+      var(--paper);
+  }
+  .splash-logo{ width:min(72vw, 640px); margin-bottom:22px; }
+  .splash-sub{
+    font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:var(--umber);
+    margin-bottom:56px;
+  }
+  .splash-scroll{
+    position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--umber);
+  }
+  .splash-scroll .bar{
+    width:1px; height:34px; background:var(--umber); opacity:.4;
+    animation:scrollpulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollpulse{ 0%,100%{opacity:.15;} 50%{opacity:.55;} }
+
+  /* ===== Showcase (rotating product reveal) ===== */
+  .showcase{
+    position:relative; overflow:hidden;
+    min-height:92vh;
+    display:flex; align-items:center;
+    background:#0d0a08;
+    color:var(--paper);
+  }
+  .showcase-bg{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(92,18,32,.35), transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(20,25,50,.4), transparent 55%),
+      #0d0a08;
+    transition:background 1s ease;
+  }
+  .showcase.state-blood .showcase-bg{
+    background:
+      radial-gradient(ellipse at 35% 30%, rgba(120,20,30,.5), transparent 60%),
+      #100807;
+  }
+  .showcase.state-aurora .showcase-bg{
+    background:
+      radial-gradient(ellipse at 65% 30%, rgba(30,40,90,.5), transparent 60%),
+      #08090f;
+  }
+  .showcase-wrap{
+    position:relative; z-index:2; width:100%;
+    display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:20px;
+    max-width:1180px; margin:0 auto; padding:60px 32px;
+  }
+  @media(max-width:860px){ .showcase-wrap{ grid-template-columns:1fr; text-align:center; } }
+  .showcase-copy .eyebrow{ color:#C9B48A; }
+  .showcase-tag{
+    display:inline-block; margin-bottom:16px; padding:6px 14px; font-size:10px; letter-spacing:.16em;
+    text-transform:uppercase; font-weight:700; border:1px solid rgba(247,243,234,.3); color:#C9B48A;
+  }
+  .showcase h2{
+    font-family:'Fraunces', serif; font-size:clamp(34px,5vw,56px); font-weight:500; line-height:1.05;
+    margin:14px 0 18px; transition:opacity .5s ease;
+  }
+  .showcase p.lede{ font-size:16px; color:#B9AC98; max-width:420px; margin-bottom:30px; }
+  @media(max-width:860px){ .showcase p.lede{ margin-left:auto; margin-right:auto; } }
+  .showcase-dots{ display:flex; gap:10px; margin-top:36px; }
+  @media(max-width:860px){ .showcase-dots{ justify-content:center; } }
+  .showcase-dots button{
+    width:8px; height:8px; border-radius:50%; background:rgba(247,243,234,.25); transition:all .3s; cursor:pointer;
+  }
+  .showcase-dots button.active{ background:var(--brass); width:22px; border-radius:5px; }
+  .showcase-stage{
+    position:relative; display:flex; align-items:center; justify-content:center; height:520px;
+  }
+  .showcase-stage img{
+    position:absolute; max-height:500px; width:auto; max-width:92%;
+    filter:drop-shadow(0 40px 60px rgba(0,0,0,.5));
+    opacity:0; transform:translateY(14px) scale(.98);
+    transition:opacity .7s ease, transform .7s ease;
+    pointer-events:none;
+  }
+  .showcase-stage img.active{ opacity:1; transform:translateY(0) scale(1); }
+  @media(max-width:640px){ .showcase-stage{ height:380px; } .showcase-stage img{ max-height:360px; } }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 28px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    border:1px solid var(--ink); transition:background .25s, color .25s, border-color .25s;
+  }
+  .btn-primary{ background:var(--ink); color:var(--paper); }
+  .btn-primary:hover{ background:var(--oxblood); border-color:var(--oxblood); }
+  .btn-ghost{ background:transparent; color:var(--ink); }
+  .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .showcase .btn-primary{ border-color:var(--paper); }
+  .showcase .btn-ghost{ border-color:rgba(247,243,234,.4); color:var(--paper); }
+  .showcase .btn-ghost:hover{ background:var(--paper); color:var(--ink); }
+
+  /* ===== Section shells ===== */
+  section{ padding:88px 0; }
+  .section-head{ margin-bottom:44px; max-width:560px; }
+  .section-head h2{ font-size:clamp(30px,4vw,42px); font-weight:500; margin-top:10px; }
+  .section-head p{ color:var(--umber); margin-top:14px; font-size:15px; }
+  .divider{ height:1px; background:var(--line); border:none; }
+
+  /* ===== Pyramid (signature element) ===== */
+  .pyramid-section{ background:var(--ink); color:var(--paper); transition:background-color .8s ease, color .8s ease; }
+  .pyramid-section .eyebrow{ color:#C9B48A; }
+  .pyramid-section .section-head p{ color:#B9AC98; }
+  body[data-theme] .pyramid-section{ background:#0c0a08; color:var(--ink); }
+  .pyramid-wrap{ display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:center; }
+  @media(max-width:860px){ .pyramid-wrap{ grid-template-columns:1fr; } }
+  .pyr{ display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .pyr-tier{
+    position:relative; width:100%; padding:22px 20px; text-align:center; cursor:pointer;
+    border:1px solid rgba(247,243,234,.18); transition:background .25s, border-color .25s;
+  }
+  .pyr-tier:hover, .pyr-tier.active{ background:rgba(169,129,47,.14); border-color:var(--brass); }
+  .pyr-tier.top{ width:60%; }
+  .pyr-tier.heart{ width:80%; }
+  .pyr-tier.base{ width:100%; }
+  .pyr-tier .tier-label{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#C9B48A; display:block; margin-bottom:6px; }
+  .pyr-tier .tier-name{ font-family:'Fraunces',serif; font-size:20px; }
+  .pyr-detail{ border:1px solid rgba(247,243,234,.18); padding:32px; min-height:190px; }
+  .pyr-detail h3{ font-family:'Fraunces',serif; font-weight:500; font-size:24px; margin-bottom:12px; }
+  .scent-toggle{ display:flex; gap:12px; margin-bottom:36px; }
+  .scent-toggle button{
+    padding:12px 22px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    border:1px solid rgba(247,243,234,.25); color:#B9AC98; background:transparent; transition:all .25s; cursor:pointer;
+  }
+  .scent-toggle button.active{ border-color:var(--brass); color:#F7F3EA; background:rgba(169,129,47,.14); }
+  .pyr-detail p{ color:#CFC4B0; font-size:15px; line-height:1.7; }
+
+  /* ===== Collection ===== */
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; }
+  .filter-sort-bar{ display:flex; gap:12px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 0; margin-bottom:20px; }
+  .fs-btn{
+    display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:600;
+    letter-spacing:.02em; color:var(--ink); padding:6px 4px;
+  }
+  .fs-btn svg{ width:17px; height:17px; }
+  .fs-btn.open{ color:var(--oxblood); }
+  .filter-panel{ display:flex; flex-wrap:wrap; gap:28px; padding:18px 20px; background:var(--bone); border:1px solid var(--line); margin-bottom:24px; }
+  .filter-group-label{ display:block; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--umber); margin-bottom:10px; }
+  .sort-panel{ display:flex; flex-direction:column; gap:2px; background:var(--bone); border:1px solid var(--line); margin-bottom:24px; max-width:280px; }
+  .sort-opt{ text-align:left; padding:12px 16px; font-size:13px; }
+  .sort-opt.active{ font-weight:700; color:var(--oxblood); background:var(--paper); }
+  .sort-opt:hover{ background:var(--paper); }
+  .filter-panel[hidden], .sort-panel[hidden]{ display:none; }
+  .chip{
+    padding:9px 16px; font-size:12px; letter-spacing:.05em; text-transform:uppercase; font-weight:600;
+    border:1px solid var(--line); color:var(--umber); transition:all .2s;
+  }
+  .chip.active, .chip:hover{ border-color:var(--ink); color:var(--ink); background:var(--bone); }
+
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  @media(max-width:900px){ .grid{ grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .grid{ grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--bone); border:1px solid var(--line); position:relative; display:flex; flex-direction:column;
+    transition:transform .3s, box-shadow .3s, background-color .8s ease, border-color .8s ease;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 18px 30px rgba(30,25,18,.10); }
+  .card-media{
+    position:relative; height:340px; display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .card-media svg{ width:110px; transition:transform .4s; }
+  .card:hover .card-media svg{ transform:translateY(-6px) scale(1.03); }
+  .card-media-img{ width:auto; height:220px; max-width:78%; object-fit:contain; transition:transform .4s; }
+  .card-media-img.full-photo{
+    position:absolute; inset:0; width:100%; height:100%; max-width:none;
+    object-fit:cover; object-position:center; transition:transform .6s ease;
+  }
+  .card:hover .card-media-img.full-photo{ transform:scale(1.045); }
+  .media-open{ position:absolute; inset:0; width:100%; height:100%; padding:0; cursor:pointer; }
+  .media-open .full-photo{ position:absolute; }
+  .soon-ribbon{
+    position:absolute; top:14px; left:14px; z-index:2;
+    background:var(--ink); color:var(--paper);
+    font-size:10px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+    padding:6px 12px; border-radius:2px;
+  }
+  .notify-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:13px 18px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    border:1px solid var(--ink); background:transparent; color:var(--ink); transition:background .25s, color .25s;
+  }
+  .notify-btn:hover{ background:var(--ink); color:var(--paper); }
+  .notify-btn.sent{ background:var(--oxblood); border-color:var(--oxblood); color:var(--paper); pointer-events:none; }
+  .soon-text{
+    font-size:12px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    color:var(--oxblood); margin:2px 0 14px;
+  }
+  .card:hover .card-media-img{ transform:translateY(-6px) scale(1.03); }
+  .fam-tag{
+    position:absolute; top:14px; left:14px; font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    background:var(--paper); padding:5px 9px; color:var(--umber); font-weight:700;
+  }
+  .wish-toggle{
+    position:absolute; top:12px; right:12px; width:32px; height:32px; background:var(--paper);
+    display:flex; align-items:center; justify-content:center; border:1px solid var(--line);
+  }
+  .wish-toggle svg{ width:15px; height:15px; stroke:var(--ink); fill:none; transition:fill .2s, stroke .2s; }
+  .wish-toggle.active svg{ fill:var(--oxblood); stroke:var(--oxblood); }
+  .card-body{ padding:20px 20px 22px; border-top:1px solid var(--line); flex:1; display:flex; flex-direction:column; }
+  .card-body .name{ font-family:'Fraunces',serif; font-size:19px; margin-bottom:4px; }
+  .card-body .rating{ font-size:12px; color:var(--umber); margin-bottom:12px; }
+  .card-body .price{ font-weight:600; margin-top:auto; margin-bottom:14px; font-size:15px; }
+  .was-price{ text-decoration:line-through; color:var(--umber); font-weight:400; margin-right:8px; font-size:13px; }
+  .flash-row{ display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:4px; }
+  .flash-row .sale-price{ font-weight:700; font-size:16px; color:var(--ink); }
+  .off-badge{ color:#C4671F; font-weight:700; font-size:12px; }
+  .stock-urgency{ color:#1E8A4C; font-weight:700; font-size:12px; margin-bottom:8px; }
+  .sale-countdown{ font-size:11px; color:var(--umber); margin-bottom:10px; letter-spacing:.02em; }
+  .launch-tag{
+    display:inline-block; background:#C4671F; color:#fff; font-size:9.5px; letter-spacing:.08em;
+    text-transform:uppercase; font-weight:700; padding:3px 8px; border-radius:2px; margin-bottom:8px;
+  }
+  .card-actions{ display:flex; gap:8px; }
+  .card-actions .btn{ flex:1; padding:12px; font-size:11px; justify-content:center; }
+
+  /* ===== Reviews ===== */
+  .rev-summary{ display:flex; gap:40px; align-items:center; margin-bottom:44px; flex-wrap:wrap; }
+  .rev-score{ font-family:'Fraunces',serif; font-size:56px; font-weight:600; }
+  .stars{ color:var(--brass); font-size:16px; letter-spacing:2px; }
+  .rev-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-bottom:40px; }
+  @media(max-width:860px){ .rev-list{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:600px){ .rev-list{ grid-template-columns:1fr; } }
+  .rev-card{ background:var(--bone); border:1px solid var(--line); padding:22px; }
+  .rev-top{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .avatar{
+    width:32px; height:32px; border-radius:50%; background:var(--ink); color:var(--paper);
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+  }
+  .rev-name{ font-weight:600; font-size:14px; }
+  .rev-text{ font-size:14px; color:var(--umber); line-height:1.6; }
+
+  .review-form{ background:var(--bone); border:1px solid var(--line); padding:30px; max-width:520px; }
+  .review-form h3{ font-family:'Fraunces',serif; font-size:20px; margin-bottom:18px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--umber); font-weight:600; margin-bottom:7px; }
+  .field input, .field textarea, .field select{
+    width:100%; padding:12px 14px; border:1px solid var(--line); background:var(--paper); font-family:inherit; font-size:14px; color:var(--ink);
+  }
+  .field textarea{ resize:vertical; min-height:80px; }
+  .star-pick{ display:flex; gap:6px; font-size:22px; }
+  .star-pick span{ cursor:pointer; color:var(--line); transition:color .15s; }
+  .star-pick span.on{ color:var(--brass); }
+
+  /* ===== Newsletter / Footer ===== */
+  .newsletter{ background:var(--ink); color:var(--paper); text-align:center; padding:80px 0; transition:background-color .8s ease, color .8s ease; }
+  body[data-theme] .newsletter{ background:#0c0a08; color:var(--ink); }
+  .combo-section{ background:var(--bone); padding:90px 0; transition:background-color .8s ease; }
+  .combo-wrap{ display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:center; }
+  @media(max-width:860px){ .combo-wrap{ grid-template-columns:1fr; } }
+  .combo-copy h2{ font-family:'Fraunces',serif; font-size:clamp(28px,3.6vw,40px); margin:10px 0 16px; }
+  .combo-copy p{ color:var(--umber); margin-bottom:22px; max-width:46ch; }
+  .combo-list{ list-style:none; padding:0; margin:0 0 30px; display:flex; flex-direction:column; gap:10px; }
+  .combo-list li{ padding-left:22px; position:relative; font-size:14px; color:var(--ink); }
+  .combo-list li::before{ content:'—'; position:absolute; left:0; color:var(--brass); }
+  .combo-media{ border-radius:2px; overflow:hidden; box-shadow:0 24px 50px rgba(0,0,0,.18); }
+  .combo-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .newsletter h2{ font-family:'Fraunces',serif; font-size:clamp(28px,4vw,40px); margin-bottom:14px; }
+  .newsletter p{ color:#B9AC98; margin-bottom:28px; }
+  .nl-form{ display:flex; justify-content:center; gap:10px; max-width:420px; margin:0 auto; flex-wrap:wrap; }
+  .nl-form input{ flex:1; min-width:200px; padding:14px 16px; border:1px solid rgba(247,243,234,.3); background:transparent; color:var(--paper); font-family:inherit; }
+  .nl-form input::placeholder{ color:#8f8577; }
+
+  footer{ background:var(--paper); border-top:1px solid var(--line); padding:56px 0 30px; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px; margin-bottom:40px; }
+  @media(max-width:700px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  .foot-grid h4{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; color:var(--umber); }
+  .foot-grid li{ margin-bottom:9px; font-size:14px; }
+  .foot-grid li a:hover{ color:var(--oxblood); }
+  .foot-bottom{ display:flex; justify-content:space-between; font-size:12px; color:var(--umber); border-top:1px solid var(--line); padding-top:24px; flex-wrap:wrap; gap:10px; }
+
+  /* ===== Drawers (cart / wishlist) ===== */
+  .overlay{
+    position:fixed; inset:0; background:rgba(30,25,18,.45); opacity:0; pointer-events:none; transition:opacity .3s; z-index:90;
+  }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:400px; max-width:92vw; background:var(--paper);
+    z-index:95; transform:translateX(100%); transition:transform .35s ease, background-color .8s ease; display:flex; flex-direction:column;
+    box-shadow:-10px 0 30px rgba(0,0,0,.15);
+  }
+  .drawer.show{ transform:translateX(0); }
+  .drawer-head{ display:flex; justify-content:space-between; align-items:center; padding:24px; border-bottom:1px solid var(--line); }
+  .drawer-head h3{ font-family:'Fraunces',serif; font-size:20px; }
+  .drawer-body{ flex:1; overflow-y:auto; padding:20px 24px; }
+  .drawer-foot{ padding:22px 24px; border-top:1px solid var(--line); }
+  .drawer-empty{ color:var(--umber); font-size:14px; text-align:center; padding:60px 0; }
+
+  .line-item{ display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line-soft); }
+  .li-thumb{ width:60px; height:74px; background:var(--bone); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .li-thumb svg{ width:30px; }
+  .li-thumb-img{ width:auto; height:100%; max-width:100%; object-fit:contain; }
+  .li-info{ flex:1; }
+  .li-name{ font-family:'Fraunces',serif; font-size:15px; margin-bottom:3px; }
+  .li-meta{ font-size:12px; color:var(--umber); margin-bottom:8px; }
+  .li-controls{ display:flex; align-items:center; justify-content:space-between; }
+  .qty-stepper{ display:flex; align-items:center; border:1px solid var(--line); }
+  .qty-stepper button{ width:26px; height:26px; font-size:14px; }
+  .qty-stepper span{ width:26px; text-align:center; font-size:13px; }
+  .remove-link{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--umber); text-decoration:underline; }
+  .li-price{ font-weight:600; font-size:14px; }
+  .subtotal-row{ display:flex; justify-content:space-between; margin-bottom:16px; font-size:15px; }
+  .subtotal-row strong{ font-family:'Fraunces',serif; font-size:19px; }
+
+  /* ===== Modal (quick view / checkout) ===== */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(30,25,18,.55); display:none; align-items:center; justify-content:center;
+    z-index:100; padding:24px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal{ background:var(--paper); max-width:820px; width:100%; max-height:88vh; overflow-y:auto; position:relative; transition:background-color .8s ease; }
+  .modal-close{ position:absolute; top:18px; right:18px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; border:1px solid var(--line); background:var(--paper); z-index:2; }
+  .qv-grid{ display:grid; grid-template-columns:1fr 1fr; }
+  @media(max-width:640px){ .qv-grid{ grid-template-columns:1fr; } }
+  .qv-media{ background:var(--bone); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:36px 30px 24px; min-height:320px; transition:background-color .8s ease; }
+  .qv-media svg{ width:140px; }
+  .qv-media-img{ width:auto; height:340px; max-width:90%; object-fit:contain; }
+
+  /* Gallery stage */
+  .qv-stage{ position:relative; width:100%; display:flex; align-items:center; justify-content:center; min-height:320px; overflow:hidden; }
+  .qv-stage-img{ width:auto; height:320px; max-width:92%; object-fit:contain; border-radius:2px; transition:opacity .25s ease; }
+  .qv-stage-img.box-view{ height:380px; display:flex; align-items:center; justify-content:center; }
+  .qv-stage-img.box-view svg{ height:100%; width:auto; }
+  .mist-layer{ position:absolute; inset:0; pointer-events:none; }
+  .mist-svg{ width:100%; height:100%; }
+  .mist-drops circle{ transform-box:fill-box; transform-origin:center; }
+  @keyframes mistFly{
+    0%{ opacity:0; transform:translate(0,0) scale(.3); }
+    12%{ opacity:.9; }
+    100%{ opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.7); }
+  }
+  .spray-btn{
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    display:inline-flex; align-items:center; gap:10px;
+    padding:12px 24px 12px 18px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+    background:rgba(30,25,18,0.92); color:var(--paper); border-radius:30px; transition:background .2s, transform .15s;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+  }
+  .spray-btn:hover{ background:var(--oxblood); }
+  .spray-btn:active{ transform:translateX(-50%) scale(.94); }
+  .spray-btn svg{ width:22px; height:22px; flex-shrink:0; }
+  .spray-btn.active{ background:var(--oxblood); }
+  .qv-thumbs{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; justify-content:center; }
+  .qv-thumb{
+    width:64px; height:64px; border:1.5px solid transparent; background:#fff; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; opacity:.7; transition:opacity .2s, border-color .2s;
+  }
+  .qv-thumb img, .qv-thumb svg{ width:100%; height:100%; object-fit:cover; }
+  .qv-thumb.active{ opacity:1; border-color:var(--ink); }
+  .qv-thumb.box-thumb{ background:#12100d; }
+  .qv-thumb.box-thumb svg{ width:80%; height:80%; object-fit:contain; }
+  .qv-info{ padding:40px; }
+  .qv-info .fam-tag{ position:static; display:inline-block; margin-bottom:12px; }
+  .qv-info h2{ font-family:'Fraunces',serif; font-size:28px; margin-bottom:10px; }
+  .qv-info .desc{ color:var(--umber); font-size:14px; margin-bottom:20px; line-height:1.6; }
+  .qv-notes{ display:flex; gap:16px; margin-bottom:24px; font-size:12px; }
+  .qv-notes div span{ display:block; color:var(--umber); text-transform:uppercase; letter-spacing:.05em; font-size:10px; margin-bottom:3px; }
+  .size-picker{ display:flex; gap:8px; margin-bottom:22px; }
+  .size-opt{ padding:10px 14px; border:1px solid var(--line); font-size:13px; }
+  .size-opt.active{ border-color:var(--ink); background:var(--bone); font-weight:600; }
+  .qv-price{ font-family:'Fraunces',serif; font-size:24px; margin-bottom:20px; }
+  .qv-price .was-price{ font-family:'Inter',sans-serif; font-size:16px; }
+  .qv-qty-row{ display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+
+  /* checkout */
+  .checkout-body{ padding:40px; }
+  .checkout-body h2{ font-family:'Fraunces',serif; font-size:26px; margin-bottom:24px; }
+  .co-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:560px){ .co-grid{ grid-template-columns:1fr; } }
+  .pay-opts{ display:flex; gap:10px; margin:16px 0 24px; flex-wrap:wrap; }
+  .pay-opt{ border:1px solid var(--line); padding:10px 16px; font-size:13px; }
+  .pay-opt.active{ border-color:var(--ink); background:var(--bone); font-weight:600; }
+  .confirm{ text-align:center; padding:60px 40px; }
+  .confirm svg{ width:56px; margin:0 auto 20px; }
+  .confirm h2{ font-family:'Fraunces',serif; font-size:26px; margin-bottom:10px; }
+  .confirm p{ color:var(--umber); margin-bottom:6px; }
+  .order-num{ font-weight:700; letter-spacing:.05em; }
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--paper);
+    padding:14px 22px; font-size:13px; z-index:200; opacity:0; pointer-events:none; transition:all .3s; letter-spacing:.02em;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="site-top">
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>FREE SIGNATURE SAMPLE VIAL WITH EVERY ORDER</span>
+    <span>◆</span>
+    <span>SPEND ₹8,000, GET 15% OFF — CODE STAY15</span>
+    <span>◆</span>
+    <span>COMPLIMENTARY GIFT WRAP ON ALL BOTTLES</span>
+    <span>◆</span>
+    <span>NEW: THE SEASONAL COLLECTION, NOW LIVE</span>
+    <span>◆</span>
+    <span>FREE SIGNATURE SAMPLE VIAL WITH EVERY ORDER</span>
+    <span>◆</span>
+    <span>SPEND ₹8,000, GET 15% OFF — CODE STAY15</span>
+    <span>◆</span>
+    <span>COMPLIMENTARY GIFT WRAP ON ALL BOTTLES</span>
+    <span>◆</span>
+    <span>NEW: THE SEASONAL COLLECTION, NOW LIVE</span>
+    <span>◆</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap nav">
+    <div class="nav-left">
+      <a href="#" class="wordmark"><img src="sora-logo.png" alt="SORA" style="height:40px;width:auto;display:block;"></a>
+    </div>
+    <nav class="nav-links">
+      <a href="#collection">Collection</a>
+      <a href="#story">The House</a>
+      <a href="#reviews">Reviews</a>
+    </nav>
+    <div class="nav-right">
+      <button class="icon-btn" id="wishBtn" aria-label="Open wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.4 2.2 4.5 6 4c2.2-.3 3.9.9 6 3.4C14.1 4.9 15.8 3.7 18 4c3.8.5 5.6 4.4 4 7.8-2.5 4.6-10 9.2-10 9.2z"/></svg>
+        <span class="badge" id="wishCount">0</span>
+      </button>
+      <button class="icon-btn" id="cartBtn" aria-label="Open bag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+</div>
+
+<!-- SPLASH -->
+<section class="splash">
+  <img src="sora-logo.png" alt="SORA — After You Leave, We Stay" class="splash-logo">
+  <span class="splash-sub">Fragrance House · Est. 2026</span>
+  <div class="splash-scroll"><span class="bar"></span>Scroll</div>
+</section>
+
+<!-- SHOWCASE -->
+<section class="showcase" id="showcase">
+  <div class="showcase-bg"></div>
+  <div class="showcase-wrap">
+    <div class="showcase-copy">
+      <span class="showcase-tag">Coming Soon</span>
+      <span class="eyebrow">The Night Dominators</span>
+      <h2 id="showcaseTitle">Two forces.<br>One night.</h2>
+      <p class="lede" id="showcaseDesc">A collection built for after dark — Blood Moon's smoldering depth and Aurora Bloom's cold, electric shimmer. In development, launching soon.</p>
+      <div class="hero-actions">
+        <a href="#collection" class="btn btn-primary">See the collection</a>
+        <a href="#story" class="btn btn-ghost">Our philosophy</a>
+      </div>
+      <div class="showcase-dots" id="showcaseDots">
+        <button class="active" data-i="0" aria-label="Blood Moon"></button>
+        <button data-i="1" aria-label="Both"></button>
+        <button data-i="2" aria-label="Aurora Bloom"></button>
+      </div>
+    </div>
+    <div class="showcase-stage">
+      <img src="blood-moon-front.png" alt="SORA Blood Moon" class="active" data-i="0">
+      <img src="duo-mixed.png" alt="SORA Blood Moon and Aurora Bloom together" data-i="1">
+      <img src="aurora-front.png" alt="SORA Aurora Bloom" data-i="2">
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  const states = [
+    { title:'Blood Moon.<br><em style="font-style:italic;color:#C9670F;">Smoldering.</em>', desc:'Deep amber and dark rose beneath a crimson moon. Bold, warm, unforgettable.', imgs:['0'], cls:'state-blood' },
+    { title:'Two forces.<br>One night.', desc:"A collection built for after dark — Blood Moon's smoldering depth and Aurora Bloom's cold, electric shimmer. In development, launching soon.", imgs:['1'], cls:'' },
+    { title:'Aurora Bloom.<br><em style="font-style:italic;color:#7FA9C9;">Electric.</em>', desc:'Midnight blues and violet light — a cold shimmer that lingers like starlight on skin.', imgs:['2'], cls:'state-aurora' },
+  ];
+  let idx = 0;
+  const section = document.getElementById('showcase');
+  const titleEl = document.getElementById('showcaseTitle');
+  const descEl = document.getElementById('showcaseDesc');
+  const dots = document.querySelectorAll('#showcaseDots button');
+  const allImgs = document.querySelectorAll('.showcase-stage img');
+
+  function render(){
+    const s = states[idx];
+    titleEl.innerHTML = s.title;
+    descEl.textContent = s.desc;
+    section.className = 'showcase ' + s.cls;
+    allImgs.forEach(img=>{
+      const key = img.dataset.i;
+      const show = s.imgs.includes(key);
+      img.style.display = 'block';
+      if(show){ img.classList.add('active'); } else { img.classList.remove('active'); }
+    });
+    dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+  }
+  dots.forEach(d=> d.addEventListener('click', ()=>{ idx = Number(d.dataset.i); render(); restart(); }));
+
+  let timer;
+  function restart(){
+    clearInterval(timer);
+    timer = setInterval(()=>{ idx = (idx+1) % states.length; render(); }, 4200);
+  }
+  render();
+  restart();
+})();
+</script>
+
+
+<!-- PYRAMID / STORY -->
+<section class="pyramid-section" id="story">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">The House</span>
+      <h2 class="display">Built like a fragrance is built.</h2>
+      <p>Every SORA scent follows the same architecture perfumers have used for a century — three tiers, unfolding over time. Tap a tier.</p>
+      <p style="margin-top:14px; max-width:60ch;">Most fragrances are built for the first ten minutes. We weight ours toward the base — the notes that are still there long after you've left the room. <em style="font-style:italic; color:var(--brass);">After you leave, we stay.</em></p>
+    </div>
+    <div class="pyramid-wrap">
+      <div class="pyr">
+        <div class="pyr-tier top active" data-tier="top">
+          <span class="tier-label">First 15 minutes</span>
+          <span class="tier-name">Top Notes</span>
+        </div>
+        <div class="pyr-tier heart" data-tier="heart">
+          <span class="tier-label">The next few hours</span>
+          <span class="tier-name">Heart Notes</span>
+        </div>
+        <div class="pyr-tier base" data-tier="base">
+          <span class="tier-label">What lingers</span>
+          <span class="tier-name">Base Notes</span>
+        </div>
+      </div>
+      <div class="pyr-detail" id="pyrDetail">
+        <h3>Top Notes</h3>
+        <p>Blood orange, black pepper, and saffron — a bold, warm opening that announces itself the moment it hits skin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTION -->
+<section id="collection">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Shop</span>
+      <h2 class="display">The Collection</h2>
+      <p>Seventeen compositions, four families. Every bottle ships in matte glass with a brushed brass cap.</p>
+    </div>
+    <div class="filter-sort-bar">
+      <button class="fs-btn" id="filterToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        Filter
+      </button>
+      <button class="fs-btn" id="sortToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 4v16M4 7l3-3 3 3M17 20V4M14 17l3 3 3-3"/></svg>
+        Sort
+      </button>
+    </div>
+
+    <div class="filter-panel" id="filterPanel" hidden>
+      <div class="filter-group">
+        <span class="filter-group-label">Family</span>
+        <div class="filters" id="filters">
+          <button class="chip active" data-fam="all">All</button>
+          <button class="chip" data-fam="Woody">Woody</button>
+          <button class="chip" data-fam="Floral">Floral</button>
+          <button class="chip" data-fam="Amber">Amber</button>
+          <button class="chip" data-fam="Fresh">Fresh</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-group-label">Gender</span>
+        <div class="filters" id="genderFilters">
+          <button class="chip active" data-gender="all">All</button>
+          <button class="chip" data-gender="Unisex">Unisex</button>
+          <button class="chip" data-gender="Male">Male</button>
+          <button class="chip" data-gender="Female">Female</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sort-panel" id="sortPanel" hidden>
+      <button class="sort-opt active" data-sort="featured">Featured</button>
+      <button class="sort-opt" data-sort="price-asc">Price: Low to High</button>
+      <button class="sort-opt" data-sort="price-desc">Price: High to Low</button>
+      <button class="sort-opt" data-sort="rating">Top Rated</button>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- COMBO OFFERS -->
+<section id="combo" class="combo-section">
+  <div class="wrap combo-wrap">
+    <div class="combo-copy">
+      <span class="eyebrow">Limited Set</span>
+      <h2>The Full Collection Box</h2>
+      <p>All seven signature scents, each in its own foil-stamped box, arranged in a single slate presentation tray. Built for people who can't pick just one — or for the perfect gift.</p>
+      <ul class="combo-list">
+        <li>7 × 50ml Eau de Parfum, one of each signature scent</li>
+        <li>Individually boxed with matching foil branding</li>
+        <li>Presented in a reusable slate keepsake tray</li>
+      </ul>
+      <button class="notify-btn" id="comboNotifyBtn" style="width:auto; padding:15px 30px;">Notify me when available</button>
+    </div>
+    <div class="combo-media">
+      <img src="combo-collection.jpg" alt="SORA Full Collection Box — all seven signature scents in a slate tray">
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Reviews</span>
+      <h2 class="display">What people are wearing</h2>
+    </div>
+    <div class="rev-summary">
+      <div class="rev-score" id="avgScore">4.8</div>
+      <div>
+        <div class="stars" id="avgStars">★★★★★</div>
+        <div style="font-size:13px;color:var(--umber);margin-top:4px;" id="revCountLabel">Based on 3 reviews</div>
+      </div>
+    </div>
+    <div class="rev-list" id="revList"></div>
+
+    <div class="review-form">
+      <h3>Write a review</h3>
+      <div class="field">
+        <label>Your name</label>
+        <input type="text" id="revName" placeholder="e.g. Priya S.">
+      </div>
+      <div class="field">
+        <label>Rating</label>
+        <div class="star-pick" id="starPick">
+          <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Review</label>
+        <textarea id="revText" placeholder="How did it wear?"></textarea>
+      </div>
+      <button class="btn btn-primary" id="submitReview">Submit review</button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="wrap">
+    <h2>Join the list</h2>
+    <p>First access to limited batches. No spam, ever.</p>
+    <form class="nl-form" id="nlForm">
+      <input type="email" placeholder="your@email.com" required>
+      <button class="btn btn-primary" type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="sora-logo.png" alt="SORA" style="height:38px;width:auto;margin-bottom:12px;">
+        <p style="color:var(--umber);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">After you leave, we stay</p>
+        <p style="color:var(--umber);font-size:13px;max-width:240px;">An independent fragrance house. Composed and bottled in small batches.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul><li><a href="#collection">All fragrances</a></li><li><a href="#collection">Woody</a></li><li><a href="#collection">Floral</a></li></ul>
+      </div>
+      <div>
+        <h4>House</h4>
+        <ul><li><a href="#story">Philosophy</a></li><li><a href="#reviews">Reviews</a></li><li><a href="#">Journal</a></li></ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 SORA. All rights reserved.</span>
+      <span>College project — not a real store.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><h3>Your Bag</h3><button class="icon-btn" id="closeCart">✕</button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none;">
+    <div class="subtotal-row"><span>Subtotal</span><strong id="cartSubtotal">₹0</strong></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;" id="checkoutBtn">Checkout</button>
+  </div>
+</div>
+
+<!-- WISHLIST DRAWER -->
+<div class="drawer" id="wishDrawer">
+  <div class="drawer-head"><h3>Wishlist</h3><button class="icon-btn" id="closeWish">✕</button></div>
+  <div class="drawer-body" id="wishBody"></div>
+</div>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="qvOverlay">
+  <div class="modal" id="qvModal"></div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="coOverlay">
+  <div class="modal" id="coModal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA ================= */
+const PRODUCTS = [
+  { id:'p1', name:'Blood Moon', family:'Woody', gender:'Unisex', color:'#5C1220', boxColor:'#6B0F1A', img:'blood-moon-full.jpg', comingSoon:true,
+    gallery:['blood-moon-full.jpg','blood-moon-cap.jpg','blood-moon-label.jpg'],
+    notes:{top:'Pink pepper, bergamot', heart:'Cedar, iris', base:'Sandalwood, amber resin'},
+    desc:'A smoky, low-lit composition — cedar and sandalwood warmed by a single thread of amber.',
+    sizes:[{ml:30, price:3800},{ml:50, price:5200},{ml:100, price:7600}], rating:4.9 },
+  { id:'p2', name:'Aurora Bloom', family:'Amber', gender:'Unisex', color:'#A9812F', boxColor:'#1B2A52', img:'aurora-full.jpg', comingSoon:true,
+    gallery:['aurora-full.jpg','aurora-cap.jpg','aurora-label.jpg'],
+    notes:{top:'Sea salt, mandarin', heart:'Labdanum, jasmine', base:'Amber, musk'},
+    desc:'Coastal warmth — salt-washed citrus over a slow amber base that never turns sweet.',
+    sizes:[{ml:30, price:3600},{ml:50, price:4900},{ml:100, price:7100}], rating:4.7 },
+  { id:'p3', name:'Midnight Fig', family:'Woody', gender:'Male', color:'#1E1912', img:'midnight-fig-full.jpg', boxImg:'midnight-fig-box.jpg',
+    gallery:['midnight-fig-full.jpg'],
+    notes:{top:'Fig leaf, black pepper', heart:'Vetiver, violet', base:'Oakmoss, cedarwood'},
+    desc:'Green and shadowed. Fig leaf and vetiver, built for the hour after dark.',
+    sizes:[{ml:30, price:1900},{ml:50, price:2600},{ml:100, price:3800}], rating:4.8 },
+  { id:'p4', name:'White Smoke', family:'Fresh', gender:'Male', color:'#7C6A57', img:'white-smoke-full.jpg', boxImg:'white-smoke-box.jpg',
+    gallery:['white-smoke-full.jpg'],
+    notes:{top:'Grapefruit, elemi', heart:'White tea, incense', base:'Ambroxan, cedar'},
+    desc:'Clean smoke — white tea and incense held together with a sheer, radiant ambroxan base.',
+    sizes:[{ml:30, price:1850},{ml:50, price:2500},{ml:100, price:3650}], rating:4.6 },
+  { id:'p5', name:'Bone Orchid', family:'Floral', gender:'Female', color:'#C9B48A', img:'bone-orchid-full.jpg', boxImg:'bone-orchid-box.jpg',
+    gallery:['bone-orchid-full.jpg'],
+    notes:{top:'Green pear, neroli', heart:'Orchid, tuberose', base:'White musk, vanilla'},
+    desc:'A quiet floral — orchid and tuberose kept sheer, never loud, never sweet.',
+    sizes:[{ml:30, price:2400},{ml:50, price:3300},{ml:100, price:4800}], rating:4.9 },
+  { id:'p6', name:'Copper Rain', family:'Fresh', gender:'Unisex', color:'#8A5A34', img:'copper-rain-full.jpg', boxImg:'copper-rain-box.jpg',
+    gallery:['copper-rain-full.jpg'],
+    notes:{top:'Rain accord, ginger', heart:'Fig, geranium', base:'Vetiver, dry woods'},
+    desc:'Petrichor and ginger over dry vetiver — the smell of the first rain on warm stone.',
+    sizes:[{ml:30, price:1800},{ml:50, price:2450},{ml:100, price:3600}], rating:4.7 },
+  { id:'p7', name:'Velvet Cinder', family:'Woody', gender:'Male', color:'#3B241E', img:'velvet-cinder-full.jpg', boxImg:'velvet-cinder-box.jpg',
+    gallery:['velvet-cinder-full.jpg'],
+    notes:{top:'Cardamom, blood orange', heart:'Leather, tobacco flower', base:'Vetiver, dark amber'},
+    desc:'Warm leather and tobacco flower over smoked vetiver — quiet, low, and slow-burning.',
+    sizes:[{ml:30, price:3000},{ml:50, price:4100},{ml:100, price:6000}], rating:4.8 },
+  { id:'p8', name:'Glacier Musk', family:'Fresh', gender:'Female', color:'#A9C3CC', img:'glacier-musk-full.jpg', boxImg:'glacier-musk-box.jpg',
+    gallery:['glacier-musk-full.jpg'],
+    notes:{top:'Yuzu, mint', heart:'Lily of the valley, ozone', base:'White musk, iceberg accord'},
+    desc:'Crisp and cold — yuzu and mint over an icy musk that feels like glass.',
+    sizes:[{ml:30, price:2100},{ml:50, price:2850},{ml:100, price:4200}], rating:4.6 },
+  { id:'p9', name:'Golden Hour', family:'Amber', gender:'Female', color:'#C08A34', img:'golden-hour-full.jpg', boxImg:'golden-hour-box.jpg',
+    gallery:['golden-hour-full.jpg'],
+    notes:{top:'Mandarin, saffron', heart:'Osmanthus, honey', base:'Amber, tonka bean'},
+    desc:'Sun-warmed amber and honeyed osmanthus — the last light of a long evening.',
+    sizes:[{ml:30, price:2600},{ml:50, price:3550},{ml:100, price:5200}], rating:4.9 },
+  { id:'p10', name:'Amber Tide', family:'Amber', gender:'Unisex', color:'#C08A34', boxColor:'#8A5A1E', img:'amber-tide-full.jpg', outOfStock:true, season:'summer',
+    gallery:['amber-tide-full.jpg'],
+    notes:{top:'Sun-ripened mandarin, ginger flower', heart:'Golden osmanthus, warm spice', base:'Amber resin, sun-warmed musk'},
+    desc:'Sun-drenched and glowing — golden amber and warm spice, like the last hour of a summer evening. Part of the Seasonal Collection.',
+    sizes:[{ml:30, price:5000},{ml:50, price:5700},{ml:100, price:8200}], rating:4.8 },
+  { id:'p11', name:'Copper Wood', family:'Woody', gender:'Unisex', color:'#B85C2E', boxColor:'#6B2519', img:'copper-wood-full.jpg', outOfStock:true, season:'autumn',
+    gallery:['copper-wood-full.jpg'],
+    notes:{top:'Cinnamon bark, blood orange', heart:'Dry fig, smoked cedar', base:'Copper amber, dark oud'},
+    desc:'Smoldering and rich — copper-warm woods and dark amber, built for cool autumn evenings. Part of the Seasonal Collection.',
+    sizes:[{ml:30, price:5000},{ml:50, price:5700},{ml:100, price:8200}], rating:4.9 },
+  { id:'p12', name:'Glacial Spice', family:'Fresh', gender:'Unisex', color:'#4A5A8C', boxColor:'#141B33', img:'glacial-spice-full.jpg', outOfStock:true, season:'winter',
+    gallery:['glacial-spice-full.jpg'],
+    notes:{top:'Frozen pear, pink peppercorn', heart:'Iris, cold cardamom', base:'Ambroxan, blue musk'},
+    desc:'Cold, electric, and quietly spiced — icy florals over a glowing, glacial musk. Part of the Seasonal Collection.',
+    sizes:[{ml:30, price:5000},{ml:50, price:5700},{ml:100, price:8200}], rating:4.7 },
+  { id:'p13', name:'Blossom Tide', family:'Floral', gender:'Unisex', color:'#E8B4C0', boxColor:'#C98A9E', img:'blossom-tide-full.jpg', outOfStock:true, season:'spring',
+    gallery:['blossom-tide-full.jpg'],
+    notes:{top:'Cherry blossom, green pear', heart:'Peony, white tea', base:'Soft musk, pale sandalwood'},
+    desc:'Soft and fleeting — cherry blossom and peony over a quiet musk, like the first warm morning of spring. Part of the Seasonal Collection.',
+    sizes:[{ml:30, price:5000},{ml:50, price:5700},{ml:100, price:8200}], rating:4.8 },
+  { id:'p14', name:'Velora', family:'Floral', gender:'Female', color:'#D98CA0', img:'velora-full.jpg',
+    gallery:['velora-full.jpg'],
+    notes:{top:'Cherry blossom, pink pepper', heart:'Peony, jasmine sambac', base:'Musk, soft woods'},
+    desc:'Romantic and soft-focus — sakura and peony over a musk that lingers like a memory of the room you just left.',
+    sizes:[{ml:30, price:2200},{ml:50, price:3000},{ml:100, price:4400}], rating:4.8 },
+  { id:'p15', name:'Tendre', family:'Floral', gender:'Female', color:'#C94F6D', img:'tendre-full.jpg',
+    gallery:['tendre-full.jpg'],
+    notes:{top:'Wild berry, bergamot', heart:'Peony, botanical florals', base:'White musk, soft amber'},
+    desc:'Tender and botanical — a bouquet of wild florals held together with a soft, clean musk. Launch offer, limited time.',
+    sizes:[{ml:30, price:2000},{ml:50, price:2700},{ml:100, price:4000}], rating:4.7,
+    flashSale:{was:2000, price:999} },
+  { id:'p16', name:'Noir Élégance', family:'Woody', gender:'Male', color:'#1C2536', boxColor:'#10151F', img:'noir-elegance-full.jpg',
+    gallery:['noir-elegance-full.jpg'],
+    notes:{top:'Bergamot, black pepper', heart:'Cardamom, geranium', base:'Vetiver, dark musk'},
+    desc:'Sharp and composed — a midnight-blue woody scent built for boardrooms and late departures.',
+    sizes:[{ml:30, price:2800},{ml:50, price:3800},{ml:100, price:5600}], rating:4.9 },
+  { id:'p17', name:'Lattafa', family:'Woody', gender:'Male', color:'#8A9A5B', img:'lattafa-full.jpg',
+    gallery:['lattafa-full.jpg'],
+    notes:{top:'Cocoa, orange blossom', heart:'Praline, dried fruits', base:'Amberwood, tonka'},
+    desc:'Rich and gourmand — cocoa and praline over warm amberwood. Launch offer, limited time.',
+    sizes:[{ml:30, price:2000},{ml:50, price:2700},{ml:100, price:4000}], rating:4.8,
+    flashSale:{was:2000, price:999} },
+];
+
+const TIER_COPY = {
+  top:{ title:'Top Notes', text:'The introduction — bright, volatile, gone within the hour. Bergamot, pink pepper, cardamom: the handshake before the conversation starts.' },
+  heart:{ title:'Heart Notes', text:'The character of the scent, emerging as the top notes fade and lasting several hours. Iris, jasmine, vetiver — this is what people remember.' },
+  base:{ title:'Base Notes', text:'What lingers on skin and fabric long after — sandalwood, amber, musk. The reason someone leans in.' },
+};
+
+const money = n => '₹' + n.toLocaleString('en-IN');
+const wasPrice = n => Math.round(n*1.28/50)*50;
+
+/* ================= FLASH SALE (launch offer) ================= */
+function getSaleEnd(){
+  let end = localStorage.getItem('sora_sale_end');
+  if(!end || Number(end) < Date.now()){ end = Date.now() + 48*3600*1000; localStorage.setItem('sora_sale_end', end); }
+  return Number(end);
+}
+function formatCountdown(ms){
+  if(ms<=0) return 'Offer ended';
+  const h = Math.floor(ms/3600000);
+  const m = Math.floor((ms%3600000)/60000);
+  const s = Math.floor((ms%60000)/1000);
+  return `${h}h ${m}m ${s}s left`;
+}
+const STOCK_LEFT = { p15: 6, p17: 4 };
+function flashSaleBlock(p, compact){
+  const off = p.flashSale.was - p.flashSale.price;
+  return `
+    <span class="launch-tag">Launch Offer</span>
+    <div class="flash-row">
+      <span class="was-price">${money(p.flashSale.was)}</span>
+      <span class="sale-price">${money(p.flashSale.price)}</span>
+      <span class="off-badge">${money(off)} OFF</span>
+    </div>
+    <div class="stock-urgency">Only ${STOCK_LEFT[p.id]||5} left in stock!</div>
+    <div class="sale-countdown" data-countdown="${p.id}">${formatCountdown(getSaleEnd()-Date.now())}</div>`;
+}
+
+/* ================= STATE ================= */
+let state = { cart:[], wishlist:[], reviews:[] };
+try{
+  const saved = JSON.parse(localStorage.getItem('sora_state') || 'null');
+  if(saved) state = saved;
+}catch(e){}
+
+if(!state.reviews || state.reviews.length===0){
+  state.reviews = [
+    {name:'Aanya R.', rating:5, text:'Copper Rain lasted through an entire wedding. Compliments all night.'},
+    {name:'Kabir M.', rating:5, text:'Midnight Fig is exactly what I wanted — green, dark, not sweet at all.'},
+    {name:'Zara F.', rating:4, text:'Bone Orchid is beautiful but I wish the 30ml lasted a bit longer.'},
+  ];
+}
+
+function persist(){ localStorage.setItem('sora_state', JSON.stringify(state)); }
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+/* ================= BOTTLE SVG (per product) ================= */
+function bottleSVG(color){
+  return `<svg viewBox="0 0 120 220" fill="none">
+    <rect x="42" y="8" width="36" height="20" rx="3" fill="${color}"/>
+    <rect x="50" y="0" width="20" height="12" rx="2" fill="#1E1912"/>
+    <path d="M38 28 h44 a6 6 0 0 1 6 6 v150 a10 10 0 0 1 -10 10 h-36 a10 10 0 0 1 -10 -10 v-150 a6 6 0 0 1 6 -6 z" fill="#F7F3EA" stroke="#1E1912" stroke-width="1.5"/>
+    <rect x="34" y="70" width="52" height="55" fill="${color}" opacity="0.88"/>
+  </svg>`;
+}
+
+/* Real product photo if available, otherwise the generated bottle icon */
+function productMedia(p, cls, full){
+  if(p.img) return `<img class="${cls}${full? ' full-photo':''}" src="${p.img}" alt="${p.name}">`;
+  return bottleSVG(p.color);
+}
+
+/* ================= COLOR HELPERS ================= */
+function shade(hex, pct){
+  const n = parseInt(hex.slice(1),16);
+  let r = (n>>16)&255, g=(n>>8)&255, b=n&255;
+  r = Math.round(r + (pct<0 ? r : (255-r))*pct);
+  g = Math.round(g + (pct<0 ? g : (255-g))*pct);
+  b = Math.round(b + (pct<0 ? b : (255-b))*pct);
+  r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+/* ================= PACKAGING BOX (SVG) ================= */
+function boxSVG(p){
+  const col = p.boxColor || p.color;
+  const base = shade(col, -0.32);     // clearly tinted with scent color, not near-black
+  const baseLight = shade(col, -0.08);
+  const baseDark = shade(col, -0.55);
+  const gold = '#C9A24B';
+  const goldDeep = '#9C7A2E';
+  const nameUpper = p.name.toUpperCase();
+  const familyUpper = p.family.toUpperCase();
+  return `
+  <svg viewBox="45 5 325 445" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="boxFront-${p.id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${baseLight}"/>
+        <stop offset="55%" stop-color="${base}"/>
+        <stop offset="100%" stop-color="${baseDark}"/>
+      </linearGradient>
+      <linearGradient id="boxSide-${p.id}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${base}"/>
+        <stop offset="100%" stop-color="${baseDark}"/>
+      </linearGradient>
+      <linearGradient id="boxTop-${p.id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${baseLight}"/>
+        <stop offset="100%" stop-color="${base}"/>
+      </linearGradient>
+      <linearGradient id="goldFoil-${p.id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#F3D98A"/>
+        <stop offset="45%" stop-color="${gold}"/>
+        <stop offset="100%" stop-color="${goldDeep}"/>
+      </linearGradient>
+    </defs>
+
+    <!-- top face -->
+    <polygon points="70,70 300,70 350,30 120,30" fill="url(#boxTop-${p.id})"/>
+    <!-- side face -->
+    <polygon points="300,70 300,430 350,390 350,30" fill="url(#boxSide-${p.id})"/>
+    <!-- front face -->
+    <rect x="70" y="70" width="230" height="360" fill="url(#boxFront-${p.id})"/>
+
+    <!-- foil border frame -->
+    <rect x="92" y="96" width="186" height="308" fill="none" stroke="url(#goldFoil-${p.id})" stroke-width="1.4" opacity="0.85"/>
+    <rect x="98" y="102" width="174" height="296" fill="none" stroke="url(#goldFoil-${p.id})" stroke-width="0.7" opacity="0.55"/>
+
+    <!-- wordmark, centered -->
+    <text x="185" y="255" text-anchor="middle" font-family="Fraunces, serif" font-size="36" letter-spacing="4" fill="url(#goldFoil-${p.id})">SORA</text>
+
+    <!-- product name -->
+    <text x="185" y="288" text-anchor="middle" font-family="Inter, sans-serif" font-size="12.5" letter-spacing="3.5" fill="url(#goldFoil-${p.id})">${nameUpper}</text>
+
+    <!-- footer: scent family only -->
+    <line x1="150" y1="366" x2="220" y2="366" stroke="url(#goldFoil-${p.id})" stroke-width="0.7" opacity="0.6"/>
+    <text x="185" y="384" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" letter-spacing="3" fill="url(#goldFoil-${p.id})" opacity="0.9">${familyUpper}</text>
+
+    <!-- edge highlight -->
+    <rect x="70" y="70" width="230" height="360" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1"/>
+  </svg>`;
+}
+
+/* ================= SEASONAL SCENE ART (for seasonal-collection boxes) ================= */
+function seasonScene(season, id){
+  if(season === 'summer'){
+    return {
+      defs: `
+        <radialGradient id="scn-${id}" cx="50%" cy="26%" r="75%">
+          <stop offset="0%" stop-color="#FFF3D0"/>
+          <stop offset="28%" stop-color="#FFD37A"/>
+          <stop offset="62%" stop-color="#F0A63E"/>
+          <stop offset="100%" stop-color="#8A5A1E"/>
+        </radialGradient>`,
+      art: `
+        <g>
+          <circle cx="185" cy="150" r="36" fill="#FFF8E6" opacity="0.96"/>
+          <circle cx="185" cy="150" r="46" fill="none" stroke="#FFE9B0" stroke-width="1.5" opacity="0.5"/>
+          <g stroke="#FFE3A6" stroke-width="2.2" stroke-linecap="round" opacity="0.6">
+            ${Array.from({length:12}).map((_,i)=>{
+              const a = (i*30)*Math.PI/180;
+              const x1=185+Math.cos(a)*52, y1=150+Math.sin(a)*52;
+              const x2=185+Math.cos(a)*70, y2=150+Math.sin(a)*70;
+              return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+            }).join('')}
+          </g>
+          ${[[110,340],[245,360],[130,395],[255,300],[95,260],[270,240]].map(([x,y])=>
+            `<circle cx="${x}" cy="${y}" r="1.6" fill="#FFF3D0" opacity="0.7"/>`).join('')}
+        </g>`,
+      scrimTop:false
+    };
+  }
+  if(season === 'autumn'){
+    const leaf = (x,y,rot,scale,c1,c2)=>`
+      <g transform="translate(${x},${y}) rotate(${rot}) scale(${scale})">
+        <path d="M0,-16 C9,-11 9,11 0,17 C-9,11 -9,-11 0,-16 Z" fill="${c1}"/>
+        <line x1="0" y1="-14" x2="0" y2="15" stroke="${c2}" stroke-width="0.8" opacity="0.6"/>
+      </g>`;
+    return {
+      defs: `
+        <linearGradient id="scn-${id}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#C97A43"/>
+          <stop offset="55%" stop-color="#8C4A22"/>
+          <stop offset="100%" stop-color="#4A2412"/>
+        </linearGradient>`,
+      art: `
+        <g>
+          ${leaf(120,140,-18,1.15,'#D99A4E','#5C2E12')}
+          ${leaf(230,120,24,0.95,'#B85C2E','#5C2E12')}
+          ${leaf(255,215,-32,1.0,'#E0B368','#5C2E12')}
+          ${leaf(105,250,40,0.85,'#8C4A22','#3A1D0C')}
+          ${leaf(200,300,-10,1.2,'#C97A43','#5C2E12')}
+          ${leaf(150,370,20,0.9,'#D99A4E','#5C2E12')}
+          ${leaf(260,350,-25,0.8,'#8C4A22','#3A1D0C')}
+        </g>`,
+      scrimTop:false
+    };
+  }
+  if(season === 'winter'){
+    return {
+      defs: `
+        <linearGradient id="scn-${id}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0B1330"/>
+          <stop offset="100%" stop-color="#1B2A52"/>
+        </linearGradient>
+        <linearGradient id="aur1-${id}" x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0%" stop-color="#5CE0C6" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#5CE0C6" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#9B7FE0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="aur2-${id}" x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0%" stop-color="#7FA8E0" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#9B7FE0" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#5CE0C6" stop-opacity="0"/>
+        </linearGradient>`,
+      art: `
+        <g>
+          <circle cx="235" cy="115" r="20" fill="#DCE8F5" opacity="0.85"/>
+          <circle cx="235" cy="115" r="32" fill="#DCE8F5" opacity="0.12"/>
+          <path d="M65,150 C120,110 160,170 220,120 C250,95 280,130 305,105" fill="none" stroke="url(#aur1-${id})" stroke-width="26" opacity="0.8"/>
+          <path d="M65,190 C120,150 170,205 230,160 C260,138 285,165 305,145" fill="none" stroke="url(#aur2-${id})" stroke-width="20" opacity="0.7"/>
+          ${[[95,260],[150,300],[220,270],[260,330],[110,370],[195,395],[255,230],[125,220]].map(([x,y],i)=>
+            `<circle cx="${x}" cy="${y}" r="${(i%3===0?2.2:1.3)}" fill="#EAF3FB" opacity="${(i%2===0?0.85:0.55)}"/>`).join('')}
+        </g>`,
+      scrimTop:false
+    };
+  }
+  // spring
+  return {
+    defs: `
+      <linearGradient id="scn-${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FBEFF1"/>
+        <stop offset="100%" stop-color="#F0C9D6"/>
+      </linearGradient>`,
+    art: `
+      <g>
+        <path d="M75,425 C115,365 130,320 165,290 C195,264 225,245 268,205" fill="none" stroke="#7A5B48" stroke-width="3" stroke-linecap="round"/>
+        <path d="M165,290 C150,275 140,262 150,250" fill="none" stroke="#7A5B48" stroke-width="2"/>
+        <path d="M200,258 C188,246 182,236 190,224" fill="none" stroke="#7A5B48" stroke-width="2"/>
+        ${[[150,250],[190,224],[225,205],[130,300],[245,190],[175,270]].map(([x,y],i)=>`
+          <g transform="translate(${x},${y}) rotate(${(i*47)%360})">
+            ${[0,72,144,216,288].map(a=>`<ellipse cx="${(9*Math.cos(a*Math.PI/180)).toFixed(1)}" cy="${(9*Math.sin(a*Math.PI/180)).toFixed(1)}" rx="6" ry="4.2" fill="#F4B8C9" opacity="0.92" transform="rotate(${a} ${(9*Math.cos(a*Math.PI/180)).toFixed(1)} ${(9*Math.sin(a*Math.PI/180)).toFixed(1)})"/>`).join('')}
+            <circle cx="0" cy="0" r="2.6" fill="#E8899F"/>
+          </g>`).join('')}
+        ${[[100,340],[230,360],[255,290],[110,230],[270,255],[140,390]].map(([x,y],i)=>
+          `<ellipse cx="${x}" cy="${y}" rx="4.5" ry="3" fill="#F4B8C9" opacity="0.55" transform="rotate(${(i*33)%360} ${x} ${y})"/>`).join('')}
+      </g>`,
+    scrimTop:false
+  };
+}
+
+function seasonalBoxSVG(p){
+  const col = p.boxColor || p.color;
+  const base = shade(col, -0.32);
+  const baseLight = shade(col, -0.08);
+  const baseDark = shade(col, -0.55);
+  const scene = seasonScene(p.season, p.id);
+  const isLight = p.season === 'spring';
+  const foilId = isLight ? `plumFoil-${p.id}` : `goldFoil-${p.id}`;
+  const plaqueFill = isLight ? 'rgba(58,20,30,0.16)' : 'rgba(10,8,6,0.4)';
+  const nameUpper = p.name.toUpperCase();
+  const familyUpper = p.family.toUpperCase();
+  return `
+  <svg viewBox="45 5 325 445" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      ${scene.defs}
+      <linearGradient id="boxSide-${p.id}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${base}"/>
+        <stop offset="100%" stop-color="${baseDark}"/>
+      </linearGradient>
+      <linearGradient id="boxTop-${p.id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${baseLight}"/>
+        <stop offset="100%" stop-color="${base}"/>
+      </linearGradient>
+      <linearGradient id="goldFoil-${p.id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#F3D98A"/>
+        <stop offset="45%" stop-color="#C9A24B"/>
+        <stop offset="100%" stop-color="#9C7A2E"/>
+      </linearGradient>
+      <linearGradient id="plumFoil-${p.id}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8A3A52"/>
+        <stop offset="50%" stop-color="#6B2540"/>
+        <stop offset="100%" stop-color="#4A1830"/>
+      </linearGradient>
+      <clipPath id="frontClip-${p.id}"><rect x="70" y="70" width="230" height="360"/></clipPath>
+    </defs>
+
+    <!-- top face -->
+    <polygon points="70,70 300,70 350,30 120,30" fill="url(#boxTop-${p.id})"/>
+    <!-- side face -->
+    <polygon points="300,70 300,430 350,390 350,30" fill="url(#boxSide-${p.id})"/>
+
+    <!-- front face: seasonal scene -->
+    <g clip-path="url(#frontClip-${p.id})">
+      <rect x="70" y="70" width="230" height="360" fill="url(#scn-${p.id})"/>
+      ${scene.art}
+    </g>
+
+    <!-- foil border frame -->
+    <rect x="92" y="96" width="186" height="308" fill="none" stroke="url(#${foilId})" stroke-width="1.4" opacity="0.9"/>
+    <rect x="98" y="102" width="174" height="296" fill="none" stroke="url(#${foilId})" stroke-width="0.7" opacity="0.6"/>
+
+    <!-- text legibility plaques -->
+    <rect x="120" y="228" width="130" height="66" rx="3" fill="${plaqueFill}"/>
+    <rect x="140" y="358" width="90" height="34" rx="3" fill="${plaqueFill}"/>
+
+    <!-- wordmark -->
+    <text x="185" y="255" text-anchor="middle" font-family="Fraunces, serif" font-size="34" letter-spacing="4" fill="url(#${foilId})">SORA</text>
+    <text x="185" y="286" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" letter-spacing="3.2" fill="url(#${foilId})">${nameUpper}</text>
+
+    <!-- footer -->
+    <line x1="150" y1="366" x2="220" y2="366" stroke="url(#${foilId})" stroke-width="0.7" opacity="0.7"/>
+    <text x="185" y="384" text-anchor="middle" font-family="Inter, sans-serif" font-size="9.5" letter-spacing="3" fill="url(#${foilId})" opacity="0.95">${familyUpper}</text>
+
+    <!-- edge highlight -->
+    <rect x="70" y="70" width="230" height="360" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1"/>
+  </svg>`;
+}
+
+function anyBoxSVG(p){
+  return p.season ? seasonalBoxSVG(p) : boxSVG(p);
+}
+
+/* ================= SPRAY MIST OVERLAY ================= */
+function mistSVG(){
+  return `
+  <svg class="mist-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <g class="mist-drops">
+      ${Array.from({length:26}).map((_,i)=>{
+        const cx = 190 + Math.random()*40 - 20;
+        const cy = 40 + Math.random()*30;
+        const r = 1.4 + Math.random()*2.6;
+        const dx = (Math.random()*260 - 130).toFixed(0);
+        const dy = (140 + Math.random()*160).toFixed(0);
+        const dur = (0.9 + Math.random()*0.6).toFixed(2);
+        const delay = (Math.random()*0.15).toFixed(2);
+        return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" opacity="0"
+          style="--dx:${dx}px; --dy:${dy}px; animation: mistFly ${dur}s ease-out ${delay}s;" />`;
+      }).join('')}
+    </g>
+  </svg>`;
+}
+
+function sprayIconSVG(){
+  return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 21h5a1 1 0 0 0 1-1v-8.5a2 2 0 0 0-.6-1.4L12 8.6V6h1a1 1 0 0 0 0-2h-1V3a1 1 0 0 0-2 0v1H9a1 1 0 0 0-1 1v2.5l-1.4 1.4a2 2 0 0 0-.6 1.5V20a1 1 0 0 0 1 1Z" fill="currentColor"/>
+    <path d="M16 6h2M17.5 4v4M19 7l1.5-1.5M19 9.5l1.5 1.5M16 11h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>`;
+}
+
+/* ================= SITE THEME TAKEOVER (spray-to-reveal) ================= */
+let activeTheme = null;
+function applyTheme(p){
+  const base = p.boxColor || p.color;
+  const root = document.documentElement.style;
+  root.setProperty('--paper', shade(base, -0.86));
+  root.setProperty('--bone', shade(base, -0.78));
+  root.setProperty('--ink', '#F3ECE2');
+  root.setProperty('--umber', '#BBAD99');
+  root.setProperty('--brass', '#D9B25C');
+  root.setProperty('--oxblood', shade(base, 0.18));
+  root.setProperty('--line', 'rgba(243,236,226,0.16)');
+  root.setProperty('--line-soft', 'rgba(243,236,226,0.08)');
+  document.body.setAttribute('data-theme', p.id);
+}
+function clearTheme(){
+  const root = document.documentElement.style;
+  ['--paper','--bone','--ink','--umber','--brass','--oxblood','--line','--line-soft'].forEach(v=>root.removeProperty(v));
+  document.body.removeAttribute('data-theme');
+}
+function toggleTheme(p){
+  if(activeTheme === p.id){ clearTheme(); activeTheme = null; }
+  else { applyTheme(p); activeTheme = p.id; }
+}
+
+/* ================= RENDER: PRODUCT GRID ================= */
+let activeFilter = 'all';
+let activeGender = 'all';
+let activeSort = 'featured';
+function sortList(list){
+  const arr = [...list];
+  if(activeSort==='price-asc') arr.sort((a,b)=> (a.flashSale?a.flashSale.price:a.sizes[0].price) - (b.flashSale?b.flashSale.price:b.sizes[0].price));
+  if(activeSort==='price-desc') arr.sort((a,b)=> (b.flashSale?b.flashSale.price:b.sizes[0].price) - (a.flashSale?a.flashSale.price:a.sizes[0].price));
+  if(activeSort==='rating') arr.sort((a,b)=> b.rating - a.rating);
+  return arr;
+}
+function renderGrid(){
+  const grid = document.getElementById('productGrid');
+  const list = sortList(PRODUCTS.filter(p =>
+    (activeFilter==='all' || p.family===activeFilter) &&
+    (activeGender==='all' || p.gender===activeGender)
+  ));
+  grid.innerHTML = list.map(p => `
+    <div class="card">
+      <div class="card-media" style="background:${p.color}18;">
+        <span class="fam-tag">${p.family}</span>
+        <span class="fam-tag" style="left:auto;right:14px;">${p.gender}</span>
+        ${p.comingSoon ? `<span class="soon-ribbon">Coming Soon</span>` : ''}
+        ${p.outOfStock ? `<span class="soon-ribbon" style="background:#3A3229;">Out of Stock</span>` : ''}
+        <button class="wish-toggle ${state.wishlist.includes(p.id)?'active':''}" data-wish="${p.id}" aria-label="Toggle wishlist">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.4 2.2 4.5 6 4c2.2-.3 3.9.9 6 3.4C14.1 4.9 15.8 3.7 18 4c3.8.5 5.6 4.4 4 7.8-2.5 4.6-10 9.2-10 9.2z"/></svg>
+        </button>
+        ${(p.comingSoon || p.outOfStock) ? `<button class="media-open" data-detail="${p.id}" aria-label="View ${p.name}">${productMedia(p, "card-media-img", true)}</button>` : productMedia(p, "card-media-img", !!p.img)}
+      </div>
+      <div class="card-body">
+        <div class="name">${p.name}</div>
+        ${p.comingSoon
+          ? `<div class="soon-text">Coming Soon</div>
+             <div class="card-actions">
+               <button class="notify-btn" data-notify="${p.id}">Notify me</button>
+             </div>`
+          : p.outOfStock
+          ? `<div class="rating">★ ${p.rating.toFixed(1)}</div>
+             <div class="soon-text">Out of Stock</div>
+             <div class="card-actions">
+               <button class="btn btn-ghost" data-quickview="${p.id}">Quick view</button>
+               <button class="notify-btn" data-notify="${p.id}">Notify me</button>
+             </div>`
+          : `<div class="rating">★ ${p.rating.toFixed(1)}</div>
+             ${p.flashSale ? flashSaleBlock(p) : `<div class="price"><span class="was-price">${money(wasPrice(p.sizes[0].price))}</span>From ${money(p.sizes[0].price)}</div>`}
+             <div class="card-actions">
+               <button class="btn btn-ghost" data-quickview="${p.id}">Quick view</button>
+               <button class="btn btn-primary" data-quickadd="${p.id}">Add to bag</button>
+             </div>`
+        }
+      </div>
+    </div>
+  `).join('');
+}
+
+document.getElementById('filters').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#filters .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  activeFilter = chip.dataset.fam;
+  renderGrid();
+});
+
+document.getElementById('genderFilters').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#genderFilters .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  activeGender = chip.dataset.gender;
+  renderGrid();
+});
+
+/* Filter / Sort toggle bar */
+const filterToggle = document.getElementById('filterToggle');
+const sortToggle = document.getElementById('sortToggle');
+const filterPanel = document.getElementById('filterPanel');
+const sortPanel = document.getElementById('sortPanel');
+filterToggle.addEventListener('click', ()=>{
+  const opening = filterPanel.hidden;
+  filterPanel.hidden = !opening;
+  sortPanel.hidden = true;
+  filterToggle.classList.toggle('open', opening);
+  sortToggle.classList.remove('open');
+});
+sortToggle.addEventListener('click', ()=>{
+  const opening = sortPanel.hidden;
+  sortPanel.hidden = !opening;
+  filterPanel.hidden = true;
+  sortToggle.classList.toggle('open', opening);
+  filterToggle.classList.remove('open');
+});
+sortPanel.addEventListener('click', e=>{
+  const opt = e.target.closest('.sort-opt');
+  if(!opt) return;
+  document.querySelectorAll('.sort-opt').forEach(o=>o.classList.remove('active'));
+  opt.classList.add('active');
+  activeSort = opt.dataset.sort;
+  renderGrid();
+});
+
+document.getElementById('productGrid').addEventListener('click', e=>{
+  const wishBtn = e.target.closest('[data-wish]');
+  const qv = e.target.closest('[data-quickview]');
+  const qa = e.target.closest('[data-quickadd]');
+  const nf = e.target.closest('[data-notify]');
+  const dt = e.target.closest('[data-detail]');
+  if(wishBtn){ toggleWishlist(wishBtn.dataset.wish); }
+  if(qv){ openQuickView(qv.dataset.quickview); }
+  if(qa){ addToCart(qa.dataset.quickadd, PRODUCTS.find(p=>p.id===qa.dataset.quickadd).sizes[0].ml, 1); }
+  if(dt){ openQuickView(dt.dataset.detail); }
+  if(nf){
+    const p = PRODUCTS.find(pr=>pr.id===nf.dataset.notify);
+    nf.textContent = "You're on the list"; nf.classList.add('sent');
+    toast(`We'll email you when ${p.name} launches`);
+  }
+});
+
+/* ================= WISHLIST ================= */
+function toggleWishlist(id){
+  const idx = state.wishlist.indexOf(id);
+  if(idx > -1){ state.wishlist.splice(idx,1); toast('Removed from wishlist'); }
+  else { state.wishlist.push(id); toast('Added to wishlist'); }
+  persist(); renderGrid(); renderWishDrawer(); updateBadges();
+}
+
+function renderWishDrawer(){
+  const body = document.getElementById('wishBody');
+  if(state.wishlist.length === 0){
+    body.innerHTML = `<div class="drawer-empty">Your wishlist is empty.<br>Tap the heart on any fragrance to save it.</div>`;
+    return;
+  }
+  body.innerHTML = state.wishlist.map(id=>{
+    const p = PRODUCTS.find(pr=>pr.id===id);
+    return `<div class="line-item">
+      <div class="li-thumb">${productMedia(p, "li-thumb-img")}</div>
+      <div class="li-info">
+        <div class="li-name">${p.name}</div>
+        <div class="li-meta">From ${money(p.sizes[0].price)}</div>
+        <div class="li-controls">
+          <button class="btn btn-primary" style="padding:8px 12px;font-size:10px;" data-movecart="${p.id}">Add to bag</button>
+          <button class="remove-link" data-unwish="${p.id}">Remove</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('wishBody').addEventListener('click', e=>{
+  const un = e.target.closest('[data-unwish]');
+  const mv = e.target.closest('[data-movecart]');
+  if(un) toggleWishlist(un.dataset.unwish);
+  if(mv){ const p = PRODUCTS.find(pr=>pr.id===mv.dataset.movecart); addToCart(p.id, p.sizes[0].ml, 1); }
+});
+
+/* ================= CART ================= */
+function effectivePrice(p, ml){
+  const size = p.sizes.find(s=>s.ml===ml);
+  if(p.flashSale && p.sizes[0].ml===ml) return p.flashSale.price;
+  return size.price;
+}
+function addToCart(id, ml, qty){
+  const existing = state.cart.find(c => c.id===id && c.ml===ml);
+  if(existing){ existing.qty += qty; }
+  else { state.cart.push({id, ml, qty}); }
+  persist(); updateBadges(); renderCartDrawer();
+  toast('Added to bag');
+}
+
+function updateCartQty(id, ml, delta){
+  const item = state.cart.find(c=>c.id===id && c.ml===ml);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0){ state.cart = state.cart.filter(c => !(c.id===id && c.ml===ml)); }
+  persist(); updateBadges(); renderCartDrawer();
+}
+
+function removeFromCart(id, ml){
+  state.cart = state.cart.filter(c => !(c.id===id && c.ml===ml));
+  persist(); updateBadges(); renderCartDrawer();
+}
+
+function cartTotal(){
+  return state.cart.reduce((sum, c)=>{
+    const p = PRODUCTS.find(pr=>pr.id===c.id);
+    return sum + effectivePrice(p, c.ml) * c.qty;
+  }, 0);
+}
+
+function renderCartDrawer(){
+  const body = document.getElementById('cartBody');
+  const foot = document.getElementById('cartFoot');
+  if(state.cart.length === 0){
+    body.innerHTML = `<div class="drawer-empty">Your bag is empty.<br>Explore the collection to begin.</div>`;
+    foot.style.display = 'none';
+    return;
+  }
+  foot.style.display = 'block';
+  body.innerHTML = state.cart.map(c=>{
+    const p = PRODUCTS.find(pr=>pr.id===c.id);
+    const price = effectivePrice(p, c.ml);
+    return `<div class="line-item">
+      <div class="li-thumb">${productMedia(p, "li-thumb-img")}</div>
+      <div class="li-info">
+        <div class="li-name">${p.name}</div>
+        <div class="li-meta">${c.ml}ml · ${money(price)}</div>
+        <div class="li-controls">
+          <div class="qty-stepper">
+            <button data-qty-down="${p.id}" data-ml="${c.ml}">−</button>
+            <span>${c.qty}</span>
+            <button data-qty-up="${p.id}" data-ml="${c.ml}">+</button>
+          </div>
+          <span class="li-price">${money(price * c.qty)}</span>
+        </div>
+        <button class="remove-link" style="margin-top:8px;" data-remove="${p.id}" data-ml="${c.ml}">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cartSubtotal').textContent = money(cartTotal());
+}
+
+document.getElementById('cartBody').addEventListener('click', e=>{
+  const up = e.target.closest('[data-qty-up]');
+  const down = e.target.closest('[data-qty-down]');
+  const rm = e.target.closest('[data-remove]');
+  if(up) updateCartQty(up.dataset.qtyUp, Number(up.dataset.ml), 1);
+  if(down) updateCartQty(down.dataset.qtyDown, Number(down.dataset.ml), -1);
+  if(rm) removeFromCart(rm.dataset.remove, Number(rm.dataset.ml));
+});
+
+function updateBadges(){
+  document.getElementById('cartCount').textContent = state.cart.reduce((s,c)=>s+c.qty,0);
+  document.getElementById('wishCount').textContent = state.wishlist.length;
+}
+
+/* ================= DRAWERS OPEN/CLOSE ================= */
+const overlay = document.getElementById('overlay');
+const cartDrawer = document.getElementById('cartDrawer');
+const wishDrawer = document.getElementById('wishDrawer');
+
+function openDrawer(drawer){ overlay.classList.add('show'); drawer.classList.add('show'); }
+function closeDrawers(){
+  overlay.classList.remove('show');
+  cartDrawer.classList.remove('show');
+  wishDrawer.classList.remove('show');
+}
+
+document.getElementById('cartBtn').addEventListener('click', ()=> openDrawer(cartDrawer));
+document.getElementById('wishBtn').addEventListener('click', ()=> openDrawer(wishDrawer));
+document.getElementById('closeCart').addEventListener('click', closeDrawers);
+document.getElementById('closeWish').addEventListener('click', closeDrawers);
+overlay.addEventListener('click', closeDrawers);
+
+/* ================= PYRAMID (signature interaction) ================= */
+document.querySelectorAll('.pyr-tier').forEach(tier=>{
+  tier.addEventListener('click', ()=>{
+    document.querySelectorAll('.pyr-tier').forEach(t=>t.classList.remove('active'));
+    tier.classList.add('active');
+    const copy = TIER_COPY[tier.dataset.tier];
+    document.getElementById('pyrDetail').innerHTML = `<h3>${copy.title}</h3><p>${copy.text}</p>`;
+  });
+});
+
+/* ================= QUICK VIEW MODAL ================= */
+const qvOverlay = document.getElementById('qvOverlay');
+let qvState = { id:null, ml:null, qty:1 };
+
+function openQuickView(id){
+  const p = PRODUCTS.find(pr=>pr.id===id);
+  const gal = p.gallery ? [{type:'img',src:p.gallery[0]}, {type:'box'}] : null;
+  qvState = { id, ml: p.sizes[0].ml, qty:1, galIdx:0 };
+  renderQuickView(p, gal);
+  qvOverlay.classList.add('show');
+}
+
+function boxStageMarkup(p){
+  if(p.boxImg) return `<img class="qv-stage-img box-view" src="${p.boxImg}" alt="${p.name} packaging">`;
+  return `<div class="qv-stage-img box-view">${anyBoxSVG(p)}</div>`;
+}
+function boxThumbMarkup(p){
+  if(p.boxImg) return `<img src="${p.boxImg}" alt="Packaging">`;
+  return anyBoxSVG(p);
+}
+function stageContent(p, gal){
+  if(!gal) return productMedia(p,'qv-media-img');
+  const item = gal[qvState.galIdx];
+  if(item.type === 'box') return boxStageMarkup(p);
+  return `<img class="qv-stage-img" src="${item.src}" alt="${p.name}">`;
+}
+
+function renderQuickView(p, gal){
+  const size = p.sizes.find(s=>s.ml===qvState.ml);
+  const isBottleView = !gal || gal[qvState.galIdx].type !== 'box';
+
+  document.getElementById('qvModal').innerHTML = `
+    <button class="modal-close" id="qvClose">✕</button>
+    <div class="qv-grid">
+      <div class="qv-media">
+        <div class="qv-stage" id="qvStage">
+          ${stageContent(p, gal)}
+          <div class="mist-layer" id="mistLayer"></div>
+          ${gal && isBottleView ? `<button class="spray-btn ${activeTheme===p.id?'active':''}" id="sprayBtn">${sprayIconSVG()}<span>${activeTheme===p.id?'Clear scent':'Spray to test'}</span></button>` : ''}
+        </div>
+        ${gal ? `<div class="qv-thumbs">
+          ${gal.map((item,i)=> item.type==='box'
+            ? `<button class="qv-thumb box-thumb ${i===qvState.galIdx?'active':''}" data-gal="${i}" aria-label="Packaging">${boxThumbMarkup(p)}</button>`
+            : `<button class="qv-thumb ${i===qvState.galIdx?'active':''}" data-gal="${i}"><img src="${item.src}" alt=""></button>`
+          ).join('')}
+        </div>` : ''}
+      </div>
+      <div class="qv-info">
+        <span class="fam-tag">${p.family}</span>
+        <h2>${p.name}</h2>
+        ${p.comingSoon ? `<div class="soon-text" style="margin-top:-4px;">Coming Soon</div>` : ''}
+        ${p.outOfStock ? `<div class="soon-text" style="margin-top:-4px;">Out of Stock</div>` : ''}
+        <p class="desc">${p.desc}</p>
+        <div class="qv-notes">
+          <div><span>Top</span>${p.notes.top}</div>
+          <div><span>Heart</span>${p.notes.heart}</div>
+          <div><span>Base</span>${p.notes.base}</div>
+        </div>
+        ${p.comingSoon ? `
+          <button class="notify-btn" id="qvNotifyBtn">Notify me at launch</button>
+        ` : p.outOfStock ? `
+          <div class="qv-price">${money(size.price)}</div>
+          <button class="notify-btn" id="qvNotifyBtn">Notify me when back in stock</button>
+        ` : `
+          <div class="size-picker">
+            ${p.sizes.map(s=>`<button class="size-opt ${s.ml===qvState.ml?'active':''}" data-size="${s.ml}">${s.ml}ml</button>`).join('')}
+          </div>
+          <div class="qv-price">${(p.flashSale && qvState.ml===p.sizes[0].ml) ? flashSaleBlock(p) : `<span class="was-price">${money(wasPrice(size.price))}</span>${money(size.price)}`}</div>
+          <div class="qv-qty-row">
+            <div class="qty-stepper">
+              <button id="qvQtyDown">−</button><span id="qvQtyVal">${qvState.qty}</span><button id="qvQtyUp">+</button>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" id="qvAddBtn">Add to bag — ${money(effectivePrice(p, qvState.ml)*qvState.qty)}</button>
+        `}
+      </div>
+    </div>
+  `;
+  document.getElementById('qvClose').addEventListener('click', ()=> qvOverlay.classList.remove('show'));
+
+  if(gal){
+    document.querySelectorAll('.qv-thumb').forEach(btn=>{
+      btn.addEventListener('click', ()=>{ qvState.galIdx = Number(btn.dataset.gal); renderQuickView(p, gal); });
+    });
+    const sprayBtn = document.getElementById('sprayBtn');
+    if(sprayBtn){
+      sprayBtn.addEventListener('click', ()=>{
+        document.getElementById('mistLayer').innerHTML = mistSVG();
+        toggleTheme(p);
+        sprayBtn.classList.toggle('active', activeTheme === p.id);
+        sprayBtn.querySelector('span').textContent = activeTheme === p.id ? 'Clear scent' : 'Spray to test';
+      });
+    }
+  }
+
+  if(p.comingSoon || p.outOfStock){
+    document.getElementById('qvNotifyBtn').addEventListener('click', (e)=>{
+      e.target.textContent = "You're on the list"; e.target.classList.add('sent');
+      toast(p.comingSoon ? `We'll email you when ${p.name} launches` : `We'll email you when ${p.name} is back in stock`);
+    });
+    return;
+  }
+
+  document.querySelectorAll('.size-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ qvState.ml = Number(btn.dataset.size); renderQuickView(p, gal); });
+  });
+  document.getElementById('qvQtyUp').addEventListener('click', ()=>{ qvState.qty++; renderQuickView(p, gal); });
+  document.getElementById('qvQtyDown').addEventListener('click', ()=>{ if(qvState.qty>1){qvState.qty--; renderQuickView(p, gal);} });
+  document.getElementById('qvAddBtn').addEventListener('click', ()=>{
+    addToCart(p.id, qvState.ml, qvState.qty);
+    qvOverlay.classList.remove('show');
+  });
+}
+qvOverlay.addEventListener('click', e=>{ if(e.target === qvOverlay) qvOverlay.classList.remove('show'); });
+
+/* ================= CHECKOUT ================= */
+const coOverlay = document.getElementById('coOverlay');
+let selectedPay = 'card';
+
+document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+  closeDrawers();
+  renderCheckout();
+  coOverlay.classList.add('show');
+});
+
+function renderCheckout(){
+  document.getElementById('coModal').innerHTML = `
+    <button class="modal-close" id="coClose">✕</button>
+    <div class="checkout-body">
+      <h2>Checkout</h2>
+      <div class="co-grid">
+        <div class="field"><label>Full name</label><input type="text" id="coName" required></div>
+        <div class="field"><label>Phone</label><input type="tel" id="coPhone" required></div>
+      </div>
+      <div class="field"><label>Address</label><input type="text" id="coAddr" required></div>
+      <div class="co-grid">
+        <div class="field"><label>City</label><input type="text" id="coCity" required></div>
+        <div class="field"><label>PIN code</label><input type="text" id="coPin" required></div>
+      </div>
+      <label style="display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--umber);font-weight:600;margin-bottom:8px;">Payment method</label>
+      <div class="pay-opts">
+        <button class="pay-opt active" data-pay="card">Card</button>
+        <button class="pay-opt" data-pay="upi">UPI</button>
+        <button class="pay-opt" data-pay="cod">Cash on delivery</button>
+      </div>
+      <div class="subtotal-row"><span>Total</span><strong>${money(cartTotal())}</strong></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" id="placeOrderBtn">Place order</button>
+    </div>
+  `;
+  document.getElementById('coClose').addEventListener('click', ()=> coOverlay.classList.remove('show'));
+  document.querySelectorAll('.pay-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.pay-opt').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); selectedPay = btn.dataset.pay;
+    });
+  });
+  document.getElementById('placeOrderBtn').addEventListener('click', ()=>{
+    const name = document.getElementById('coName').value.trim();
+    const addr = document.getElementById('coAddr').value.trim();
+    if(!name || !addr){ toast('Please fill in your details'); return; }
+    const orderNum = 'SORA-' + Math.floor(100000 + Math.random()*899999);
+    document.getElementById('coModal').innerHTML = `
+      <button class="modal-close" id="coClose2">✕</button>
+      <div class="confirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5C1220" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+        <h2>Order placed</h2>
+        <p>Thank you, ${name}. Your order is confirmed.</p>
+        <p>Order number: <span class="order-num">${orderNum}</span></p>
+        <p style="margin-top:16px;font-size:13px;">A confirmation would normally be sent to your email.</p>
+      </div>
+    `;
+    document.getElementById('coClose2').addEventListener('click', ()=> coOverlay.classList.remove('show'));
+    state.cart = []; persist(); updateBadges(); renderCartDrawer();
+  });
+}
+coOverlay.addEventListener('click', e=>{ if(e.target === coOverlay) coOverlay.classList.remove('show'); });
+
+/* ================= REVIEWS ================= */
+function renderReviews(){
+  const list = document.getElementById('revList');
+  list.innerHTML = state.reviews.map(r=>`
+    <div class="rev-card">
+      <div class="rev-top">
+        <div class="avatar">${r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
+        <div>
+          <div class="rev-name">${r.name}</div>
+          <div class="stars" style="font-size:12px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+        </div>
+      </div>
+      <div class="rev-text">${r.text}</div>
+    </div>
+  `).join('');
+  const avg = (state.reviews.reduce((s,r)=>s+r.rating,0) / state.reviews.length) || 0;
+  document.getElementById('avgScore').textContent = avg.toFixed(1);
+  document.getElementById('avgStars').textContent = '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg));
+  document.getElementById('revCountLabel').textContent = `Based on ${state.reviews.length} review${state.reviews.length!==1?'s':''}`;
+}
+
+let pickedStars = 5;
+document.querySelectorAll('#starPick span').forEach(s=>{
+  s.classList.add('on');
+  s.addEventListener('click', ()=>{
+    pickedStars = Number(s.dataset.v);
+    document.querySelectorAll('#starPick span').forEach(el=>{
+      el.classList.toggle('on', Number(el.dataset.v) <= pickedStars);
+    });
+  });
+});
+
+document.getElementById('submitReview').addEventListener('click', ()=>{
+  const name = document.getElementById('revName').value.trim();
+  const text = document.getElementById('revText').value.trim();
+  if(!name || !text){ toast('Please add your name and review'); return; }
+  state.reviews.unshift({name, rating:pickedStars, text});
+  persist(); renderReviews();
+  document.getElementById('revName').value = '';
+  document.getElementById('revText').value = '';
+  toast('Review posted — thank you');
+});
+
+/* ================= NEWSLETTER ================= */
+document.getElementById('nlForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  toast('Subscribed');
+  e.target.reset();
+});
+
+/* ================= INIT ================= */
+renderGrid();
+renderCartDrawer();
+renderWishDrawer();
+renderReviews();
+updateBadges();
+
+document.getElementById('comboNotifyBtn').addEventListener('click', (e)=>{
+  e.target.textContent = "You're on the list";
+  e.target.classList.add('sent');
+  toast("We'll email you when the Full Collection Box is available");
+});
+
+setInterval(()=>{
+  document.querySelectorAll('[data-countdown]').forEach(el=>{
+    el.textContent = formatCountdown(getSaleEnd()-Date.now());
+  });
+}, 1000);
+</script>
+</body>
+</html>
